@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Demo of Linkurious Enterprise</title>
+    <!--<link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>-->
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+      body {
+        margin: 0;
+        background: #fafafa;
+        font-family: 'Roboto', Helvetica, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overflow: hidden;
+      }
+
+      a {
+        color: #EA5565;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      header {
+        height: 70px;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+        border-bottom-color: rgb(20, 18, 41);
+        background: rgb(30, 29, 50);
+      }
+
+      .container {
+        max-width: 790px;
+        width: 95%;
+        margin: 0 auto;
+        padding: 15px;
+      }
+
+      .container-center {
+        max-width: 790px;
+        width: 95%;
+        margin: 0 auto;
+        padding: 15px;
+        font-size: 18px;
+        text-align: center;
+        color: #1E1D32;
+      }
+
+      .right {
+        float: right;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+      }
+
+      .btn-default {
+        color: #333;
+        background-color: #fff;
+        border-color: #ccc;
+      }
+
+      .btn-primary {
+        color: #fff;
+        background-color: #f65565;
+        border-color: #e64f5e;
+      }
+
+      .btn-primary:hover {
+        background-color: #e64f5e;
+        border: 1px solid #c54451;
+      }
+
+      .btn-default:active,
+      .btn-default:focus,
+      .btn-default:hover {
+        color: #333;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+      }
+
+      .btn-lg {
+        padding: 10px 16px;
+        font-size: 18px;
+        line-height: 1.3333333;
+        border-radius: 6px;
+      }
+
+      .btn-sm {
+        padding: 5px 10px;
+        font-size: 12px;
+        line-height: 1.5;
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <img src="linkurious-sombre-tr-206x40-compressed.png" width="206" height="40" />
+        <div class="right">
+          <button class="btn btn-lg btn-primary" onclick="parent.location='demo.html'">Start the demo</button>
+        </div>
+      </div>
+    </header>
+    <div class="container-center">
+      <p>
+        Linkurious helps you to visually explore a graph database. In this demo we offer you the ability to explore the connections between startups of the French ecosystem.
+      </p>
+      <p>
+        The data is a sample of <a href="https://www.crunchbase.com/" target="_blank">Crunchbase&trade;</a>. It is a graph of companies linked to market sectors, cities, and investors. Companies may be bound by an acquisition or an investment. See an example below that displays the neighborhood of a company called Criteo.
+      </p>
+      <img src="criteo-neighborhood.png" />
+    </div>
+  </body>
+</html>
