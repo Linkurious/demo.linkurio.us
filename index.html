@@ -12,7 +12,7 @@
         background: #fafafa;
         font-family: 'Roboto', Helvetica, sans-serif;
         -webkit-font-smoothing: antialiased;
-        overflow: hidden;
+        overflow-x: hidden;
       }
 
       a {
@@ -118,9 +118,13 @@
   <body>
     <header>
       <div class="container">
-        <img src="linkurious-sombre-tr-206x40-compressed.png" width="206" height="40" />
+        <a href='https://linkurio.us'>
+          <img src="linkurious-sombre-tr-206x40-compressed.png" width="206" height="40" />
+        </a>
         <div class="right">
-          <button class="btn btn-lg btn-primary" onclick="parent.location='demo.html'">Start the demo <small>login:demo, password:demo</small></button>
+          <button class="btn btn-lg btn-primary" onclick="parent.location='demo.html'">
+            Start the demo <small>login:your email, password:<em>demo</em></small>
+          </button>
         </div>
       </div>
     </header>
@@ -131,7 +135,11 @@
       <p>
         The data is a sample of <a href="https://www.crunchbase.com/" target="_blank">Crunchbase&trade;</a>. It is a graph of companies linked to market sectors, cities, and investors. Companies may be bound by an acquisition or an investment. See an example below that displays the neighborhood of a company.
       </p>
-      <img src="criteo-neighborhood.png" />
+      <img src="criteo-neighborhood.png" height="400" />
+      <hr />
+      <p>
+        Don't have an access yet? Go to <a href='https://linkurio.us'>linkurio.us</a> and click on <em>Try now</em>.
+      </p>
     </div>
   </body>
 </html>
