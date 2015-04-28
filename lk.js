@@ -19,7 +19,7 @@ lk.openUrl = function(url) {
     false, false, false, false, 0, null);
 
   anchor.dispatchEvent(event);
-  anchor.remove();
+  delete anchor;
 }
 
 lk.email = lk.getUrlVar('u');
