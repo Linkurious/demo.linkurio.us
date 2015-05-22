@@ -8,20 +8,6 @@ lk.getUrlVar = function(key){
   return result && unescape(result[1]) || "";
 };
 
-lk.openUrl = function(url) {
-  var anchor = document.createElement('a');
-  anchor.setAttribute('href', url);
-  anchor.setAttribute('target', '_blank');
-
-  // Click event
-  var event = document.createEvent('MouseEvent');
-  event.initMouseEvent('click', true, false, window, 0, 0, 0 ,0, 0,
-    false, false, false, false, 0, null);
-
-  anchor.dispatchEvent(event);
-  delete anchor;
-}
-
 lk.email = lk.getUrlVar('u');
 
 lk.generateEmail = function () {
@@ -31,7 +17,10 @@ lk.generateEmail = function () {
 
 lk.register = function () {
   var self = this;
-  var demoUrl = 'http://crunchbase.linkurio.us:3000/';
+  var demoUrl = 'http://crunchbase.linkurio.us/';
+
+  $('#registerBtn').addClass('disabled');
+  $('#registerBtn').html('Creating account...');
 
   console.log(self.email);
   jQuery.support.cors = true;
@@ -88,7 +77,9 @@ lk.register = function () {
         })
 
         .done(function (data) {
-          lk.openUrl('http://linkurio.us/demo/crunchbase.html');
+          $('#registerBtn').css('display', 'none');
+          $('#startTxt').css('display', '');
+          $('#startBtn').css('display', '');
         });
       });
     });

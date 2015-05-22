@@ -35,11 +35,14 @@
           <img src="linkurious-sombre-tr-206x40-compressed.png" width="206" height="40" />
         </a>
         <div class="right">
-          <button class="btn btn-lg btn-primary" onclick="lk.register()">
-            Start</small>
+          <button id="registerBtn" class="btn btn-lg btn-primary" onclick="lk.register();">
+            Create account
           </button>
+          <a id="startBtn" href="http://linkurio.us/demo/crunchbase.html" target="_blank" class="btn btn-lg btn-primary" style="display:none;">
+            Start!
+          </a>
         </div>
-        <div class="right" style="margin:5px 15px 0 0">
+        <div id="startTxt" class="right" style="margin:5px 15px 0 0; display:none;">
           Use <span id="gen" style="display:none;">generated</span> login: <em><span id="login"></span></em><br />
           Use password: <em>demo</em>
         </div>
