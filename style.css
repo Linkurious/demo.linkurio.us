@@ -6,6 +6,12 @@ body {
   overflow-x: hidden;
 }
 
+/*html, body
+{
+  height: 100%;
+  overflow: hidden;
+}*/
+
 #demo-header {
     position: fixed;
     height: 49px!important;
@@ -41,6 +47,10 @@ header {
 }
 
 .container {
+  max-width: 790px;
+  width: 95%;
+  margin: 0 auto;
+  /*color: #ffffff;*/
   padding: 15px;
 }
 

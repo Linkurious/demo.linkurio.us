@@ -1,87 +1,89 @@
-var lk = lk || {};
 
-if (typeof jQuery === 'undefined') throw 'jQuery is not declared';
-if (typeof chance === 'undefined') throw 'chance is not declared';
+var lk = (function() {
+  var self = {};
 
-lk.getUrlVar = function(key){
-  var result = new RegExp(key + "=([^&]*)", "i").exec(window.location.search);
-  return result && unescape(result[1]) || "";
-};
+  if (typeof $ === 'undefined') throw new Error('"jQuery" is not declared');
+  if (typeof chance === 'undefined') throw new Error('"chance" is not declared');
 
-lk.email = lk.getUrlVar('u');
+  self.getUrlVar = function (key) {
+    var match = new RegExp('[?&]' + key + '=([^&#]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1]) || "";
+  };
 
-lk.generateEmail = function () {
-  this.email = lk.getUrlVar('u') || chance.email();
-  return this;
-};
+  self.email = self.getUrlVar('u');
 
-lk.register = function () {
-  var self = this;
-  var demoUrl = 'http://crunchbase.linkurio.us/';
+  self.generateEmail = function () {
+    self.email = self.getUrlVar('u') || chance.email();
+  };
 
-  $('#registerBtn').addClass('disabled');
-  $('#registerBtn').html('Creating account...');
+  self.register = function (button) {
+    var demoUrl = 'http://crunchbase.linkurio.us/';
 
-  console.log(self.email);
-  jQuery.support.cors = true;
+    var wrappedButton = $('#registerBtn');
+    var buttonText = wrappedButton.html();
+    button.form.action = demoUrl + 'api/auth/loginRedirect';
 
-  // login as admin
-  $.ajax({
-    type: 'POST',
-    cache: false,
-    url: demoUrl + 'api/auth/login',
-    data: JSON.stringify({ "usernameOrEmail": "admin", "password": "demo_admin"}),
-    processData: false,
-    contentType: 'application/json',
-    dataType: "json"
-  })
+    wrappedButton.addClass('disabled');
+    wrappedButton.html('Creating account...');
+    self.generateEmail();
 
-  .fail(function(data) {
-    alert( "Unable to log in on the demo. Please contact us at contact@linkurio.us" );
-  })
+    console.log('created fake email: ' + self.email);
 
-  .done(function() {
-    // register the user
+    wrappedButton.html('Login as "' + self.email + '" ...');
+    $('input#usernameOrEmail').val(self.email);
+    $('input#password').val('demo');
+
+    var fail = function fail(step, errorData, message) {
+      wrappedButton.removeClass('disabled');
+      wrappedButton.html(buttonText);
+      console.log(step + ' error: ' + JSON.stringify(errorData, null, ' '));
+      alert(message + '\nPlease let us know at contact@linkurio.us');
+    };
+
+    $.support.cors = true;
+    // login as admin
     $.ajax({
       type: 'POST',
       cache: false,
-      url: demoUrl + 'api/auth/register',
-      data: JSON.stringify({ "username": self.email, "email": self.email, "password": "demo"}),
+      url: demoUrl + 'api/auth/login',
+      data: JSON.stringify({"usernameOrEmail": "admin", "password": "demo_admin"}),
       processData: false,
-      contentType: 'application/json'
-    })
+      contentType: 'application/json',
+      dataType: "json"
+    }).fail(function (data) {
+      fail('admin login', data, "Unable to connect to the demo.");
+    }).done(function() {
+      console.log('logged in');
 
-    .always(function() {
-      // log out the admin
-      $.ajax(demoUrl + 'api/auth/logout')
+      // register the user
+      $.ajax({
+        type: 'POST',
+        cache: false,
+        url: demoUrl + 'api/admin/users',
+        data: JSON.stringify({username: self.email, email: self.email, password: 'demo'}),
+        processData: false,
+        contentType: 'application/json'
+      }).fail(function (data) {
+        fail('user create', data, "Could not create your demo account.");
+      }).done(function() {
+        console.log('demo account created');
 
-      .fail(function(data) {
-        alert( "Something went wrong while creating your demo user. Please contact us at contact@linkurio.us" );
-      })
+        // log out the admin
+        $.ajax(demoUrl + 'api/auth/logout').fail(function (data) {
+          fail('admin logout', data, "Something went wrong while creating your demo account.");
+        }).done(function() {
+          console.log('logged out');
 
-      .done(function() {
-        // log in as user
-        $.ajax({
-          type: 'POST',
-          cache: false,
-          url: demoUrl + 'api/auth/login',
-          data: JSON.stringify({ "usernameOrEmail": self.email, "password": "demo"}),
-          processData: false,
-          contentType: 'application/json',
-          withCredentials: true,
-          crossDomain: true
-        })
+          $('#registerBtn').html('Loading the demo ...');
 
-        .fail(function(data) {
-          alert( "Unable to connect you on the demo. Please contact us at contact@linkurio.us" );
-        })
+          $(window.parent.document.getElementById('login-header')).hide();
+          $(window.parent.document.getElementById('demo-header')).show();
 
-        .done(function (data) {
-          $('#registerBtn').css('display', 'none');
-          $('#startTxt').css('display', '');
-          $('#startBtn').css('display', '');
+          button.form.submit();
         });
       });
     });
-  });
-};
+  };
+
+  return self;
+})();
