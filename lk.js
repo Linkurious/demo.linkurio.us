@@ -32,6 +32,7 @@ var lk = (function() {
     wrappedButton.html('Login as "' + self.email + '" ...');
     $('input#usernameOrEmail').val(self.email);
     $('input#password').val('demo');
+    $('input#path').val('/dashboard');
 
     var fail = function fail(step, errorData, message) {
       wrappedButton.removeClass('disabled');
@@ -40,7 +41,18 @@ var lk = (function() {
       alert(message + '\nPlease let us know at contact@linkurio.us');
     };
 
+    // enable cross-domain (work in progress)
     $.support.cors = true;
+    $.ajaxPrefilter(function(options) {
+      options.crossDomain = true;
+      options.xhrFields = {withCredentials: true};
+    });
+
+    function resetCookie() {
+      document.cookie = 'connect.sid=; path=/; expires=Thu, 01-Jan-70 00:00:01 GMT;';
+    }
+    resetCookie();
+
     // login as admin
     $.ajax({
       type: 'POST',
@@ -73,6 +85,7 @@ var lk = (function() {
           fail('admin logout', data, "Something went wrong while creating your demo account.");
         }).done(function() {
           console.log('logged out');
+          resetCookie();
 
           $('#registerBtn').html('Loading the demo ...');
 
@@ -87,3 +100,4 @@ var lk = (function() {
 
   return self;
 })();
+
