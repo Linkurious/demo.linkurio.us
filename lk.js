@@ -1,8 +1,7 @@
 
 var lk = (function() {
   var self = {};
-  //var demoUrl = 'http://crunchbase.linkurio.us/';
-  var demoUrl = 'http://192.168.1.6:3000/';
+  var demoUrl = 'http://crunchbase.linkurio.us/';
 
   if (typeof $ === 'undefined') throw new Error('"jQuery" is not declared');
   if (typeof chance === 'undefined') throw new Error('"chance" is not declared');
