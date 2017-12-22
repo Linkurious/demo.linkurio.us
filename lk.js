@@ -1,10 +1,15 @@
 
 var lk = (function() {
   var self = {};
-  var demoUrl = document.location.protocol + '//crunchbase.linkurio.us/';
+
+  // CONFIG
   var groups = [6];
   var adminUser = 'demo';
   var adminPass = 'demo_pass';
+  
+  // detect current URL
+  var hostPort = document.location.hostname + (document.location.port ? ':' + document.location : '');
+  var demoUrl = document.location.protocol + '//' + hostPort + '/';
 
   if (typeof $ === 'undefined') throw new Error('"jQuery" is not declared');
   if (typeof chance === 'undefined') throw new Error('"chance" is not declared');
