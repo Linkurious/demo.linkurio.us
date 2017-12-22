@@ -1,14 +1,17 @@
 
 var lk = (function() {
   var self = {};
-  var demoUrl = 'http://crunchbase.linkurio.us/';
+  var demoUrl = document.location.protocol + '//crunchbase.linkurio.us/';
+  var groups = [6];
+  var adminUser = 'demo';
+  var adminPass = 'demo_pass';
 
   if (typeof $ === 'undefined') throw new Error('"jQuery" is not declared');
   if (typeof chance === 'undefined') throw new Error('"chance" is not declared');
 
   self.getUrlVar = function (key) {
     var match = new RegExp('[?&]' + key + '=([^&#]*)').exec(window.location.search);
-    return match && decodeURIComponent(match[1]) || "";
+    return match && decodeURIComponent(match[1]) || '';
   };
 
   self.email = self.getUrlVar('u');
@@ -18,21 +21,22 @@ var lk = (function() {
   };
 
   /**
-   * @param {HTMLButtonElement} button
+   * @param {HTMLFormElement} form
    * @param {object} wrappedButton jquery wrapped button
+   * @param {string} targetPath path to open upon logging in
    * @param {function} beforeDemoOpen
    * @param {function} failCb
    */
-  self.doLogin = function(button, wrappedButton, beforeDemoOpen, failCb) {
-    button.form.action = demoUrl + 'api/auth/loginRedirect';
+  self.doLogin = function(form, wrappedButton, targetPath, beforeDemoOpen, failCb) {
+    form.action = demoUrl + 'api/auth/loginRedirect';
 
     self.generateEmail();
-    console.log('created fake email: ' + self.email);
+    console.log('created random email: ' + self.email);
 
     wrappedButton.html('Connecting as "' + self.email + '" ...');
     $('input#usernameOrEmail').val(self.email);
     $('input#password').val('demo');
-    $('input#path').val('/dashboard');
+    $('input#path').val(targetPath);
 
     // enable cross-domain (work in progress)
     $.support.cors = true;
@@ -52,12 +56,12 @@ var lk = (function() {
       type: 'POST',
       cache: false,
       url: demoUrl + 'api/auth/login',
-      data: JSON.stringify({"usernameOrEmail": "admin", "password": "demo_admin"}),
+      data: JSON.stringify({usernameOrEmail: adminUser, password: adminPass}),
       processData: false,
       contentType: 'application/json',
-      dataType: "json"
+      dataType: 'json'
     }).fail(function (data) {
-      failCb('admin login', data, "Unable to connect to the demo.");
+      failCb('admin login', data, 'Unable to connect to Linkurious.');
     }).done(function() {
       console.log('logged in');
 
@@ -66,34 +70,44 @@ var lk = (function() {
         type: 'POST',
         cache: false,
         url: demoUrl + 'api/admin/users',
-        data: JSON.stringify({username: self.email, email: self.email, password: 'demo'}),
+        data: JSON.stringify({
+          username: self.email,
+          email: self.email,
+          password: 'demo',
+          groups: groups
+        }),
         processData: false,
         contentType: 'application/json'
       }).fail(function (data) {
-        failCb('user create', data, "Could not create your demo account.");
+        failCb('user create', data, 'Could not create your account.');
       }).done(function() {
         console.log('demo account created');
 
         // log out the admin
         $.ajax(demoUrl + 'api/auth/logout').fail(function (data) {
-          failCb('admin logout', data, "Something went wrong while creating your demo account.");
+          failCb('admin logout', data, 'Something went wrong while creating your account.');
         }).done(function() {
           console.log('logged out');
           resetCookie();
 
           beforeDemoOpen();
-          button.form.submit();
+          form.submit();
         });
       });
     });
   };
 
-  self.register = function (button) {
+  /**
+   * @param {string} [targetPath="/dashboard"]
+   */
+  self.register = function(targetPath) {
+    if (!targetPath) { targetPath = '/dashboard'; }
     var wrappedButton = $('#registerBtn');
+    var form = $('#form').get(0);
     var buttonText = wrappedButton.html();
 
     wrappedButton.addClass('disabled');
-    wrappedButton.html('Checking demo session...');
+    wrappedButton.html('Checking session...');
 
     var fail = function fail(step, errorData, message) {
       wrappedButton.removeClass('disabled');
@@ -103,7 +117,7 @@ var lk = (function() {
     };
 
     var beforeDemoOpen = function() {
-      wrappedButton.html('Loading the demo ...');
+      wrappedButton.html('Loading ...');
       $(window.parent.document.getElementById('login-header')).hide();
       $(window.parent.document.getElementById('demo-header')).show();
     };
@@ -111,11 +125,11 @@ var lk = (function() {
     $.ajax(demoUrl + 'api/auth/me').always(function(data, type) {
       if (type === 'error') {
         // not logged in
-        self.doLogin(button, wrappedButton, beforeDemoOpen, fail);
+        self.doLogin(form, wrappedButton, targetPath, beforeDemoOpen, fail);
       } else {
-        console.log('already logged in the demo');
+        console.log('already logged in');
         beforeDemoOpen();
-        document.location.href = demoUrl;
+        document.location.href = demoUrl + targetPath.substr(1);
       }
     });
   };
