@@ -8,7 +8,7 @@ var lk = (function() {
   var adminPass = 'demo_pass';
   
   // detect current URL
-  var hostPort = document.location.hostname + (document.location.port ? ':' + document.location : '');
+  var hostPort = document.location.hostname + (document.location.port ? ':' + document.location.port : '');
   var demoUrl = document.location.protocol + '//' + hostPort + '/';
 
   if (typeof $ === 'undefined') throw new Error('"jQuery" is not declared');
