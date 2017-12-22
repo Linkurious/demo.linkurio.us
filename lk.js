@@ -106,7 +106,9 @@ var lk = (function() {
    * @param {string} [targetPath="/dashboard"]
    */
   self.register = function(targetPath) {
+    if (typeof targetPath !== 'string') { targetPath = null; } 
     if (!targetPath) { targetPath = '/dashboard'; }
+    
     var wrappedButton = $('#registerBtn');
     var form = $('#form').get(0);
     var buttonText = wrappedButton.html();
