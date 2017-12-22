@@ -6,6 +6,7 @@ var lk = (function() {
   var groups = [6];
   var adminUser = 'demo';
   var adminPass = 'demo_pass';
+  var defaultTargetPath = '/new?populate=expandNodeId&item_id=4838';
   
   // detect current URL
   var hostPort = document.location.hostname + (document.location.port ? ':' + document.location.port : '');
@@ -107,7 +108,7 @@ var lk = (function() {
    */
   self.register = function(targetPath) {
     if (typeof targetPath !== 'string') { targetPath = null; } 
-    if (!targetPath) { targetPath = '/dashboard'; }
+    if (!targetPath) { targetPath = defaultTargetPath; }
     
     var wrappedButton = $('#registerBtn');
     var form = $('#form').get(0);
