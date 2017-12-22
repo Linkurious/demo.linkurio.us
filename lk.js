@@ -6,7 +6,7 @@ var lk = (function() {
   var groups = [6];
   var adminUser = 'demo';
   var adminPass = 'demo_pass';
-  var defaultTargetPath = '/new?populate=expandNodeId&item_id=4838';
+  var defaultTargetPath = '/new?populate=expandNodeId&item_id=47999'; // Tesla Motors
   
   // detect current URL
   var hostPort = document.location.hostname + (document.location.port ? ':' + document.location.port : '');
